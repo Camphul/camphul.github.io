@@ -29,7 +29,7 @@ export default {
     ]
   },
   env: {
-    BASE_URL: process.env.BASE_URL
+    BASE_URL: process.env.NODE_ENV !== 'production' ? process.env.BASE_URL : 'https://camphul.github.io'
   },
   // Global CSS: https://go.nuxtjs.dev/config-css
   css: [
