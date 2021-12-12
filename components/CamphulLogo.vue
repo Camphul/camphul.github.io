@@ -5,7 +5,7 @@
 export default {
   computed: {
     baseUrlLogo () {
-      return process.env.BASE_URL + (process.env.NODE_ENV !== 'production' ? '/' : '/Camphul') + '/logo.png'
+      return (process.env.NODE_ENV !== 'production' ? process.env.BASE_URL : 'https://camphul.github.io/Camphul') + '/logo.png'
     }
   }
 }

@@ -29,7 +29,7 @@ export default {
     ]
   },
   env: {
-    BASE_URL: process.env.NODE_ENV !== 'production' ? process.env.BASE_URL : 'https://camphul.github.io'
+    BASE_URL: process.env.NODE_ENV !== 'production' ? process.env.BASE_URL : 'https://camphul.github.io/Camphul'
   },
   // Global CSS: https://go.nuxtjs.dev/config-css
   css: [
@@ -44,11 +44,11 @@ export default {
       const { $content } = require('@nuxt/content')
       const files = await $content({ deep: true }).only(['path']).fetch()
 
-      return files.map(file => file.path === '/index' ? (process.env.NODE_ENV !== 'production' ? '/' : '/Camphul/') : file.path)
+      return files.map(file => file.path === '/index' ? '/' : file.path)
     }
   },
   router: {
-    base: '/Camphul/'
+    base: process.env.NODE_ENV !== 'production' ? '/' : '/Camphul/'
   },
   // Auto import components: https://go.nuxtjs.dev/config-components
   components: true,
