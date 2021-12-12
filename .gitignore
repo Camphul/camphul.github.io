@@ -1,0 +1,22 @@
+
+
+# dependencies
+node_modules
+package-lock.json
+yarn.lock
+# logs
+npm-debug.log
+
+# Nuxt build
+.nuxt
+
+# Nuxt generate
+dist
+static/sw.js
+
+# IDE's
+.idea
+.vscode/*
+# Local History for Visual Studio Code
+.history/
+*.code-workspace
