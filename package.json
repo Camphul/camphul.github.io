@@ -6,7 +6,7 @@
     "dev": "MINIMAL=1 HOST=0.0.0.0 PORT=3000 nuxt",
     "build": "nuxt build && nuxt export",
     "start": "nuxt start",
-    "generate": "nuxt generate",
+    "generate": "NODE_ENV=production nuxt generate",
     "lint:js": "eslint --ext \".js,.vue\" --ignore-path .gitignore .",
     "lint": "yarn lint:js",
     "deploy": "push-dir --dir=dist --branch=gh-pages --cleanup"

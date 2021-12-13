@@ -34,7 +34,7 @@ export default {
     baseUrl: process.env.NODE_ENV !== 'production' ? process.env.BASE_URL || '' : 'https://camphul.github.io/'
   },
   sitemap: {
-    hostname: process.env.NODE_ENV !== 'production' ? process.env.HOST || '' : 'https://camphul.github.io/', // https://www.yoursite.com
+    hostname: process.env.NODE_ENV !== 'production' ? (process.env.HOST || '') : 'camphul.github.io', // https://www.yoursite.com
     routes () {
       return getRoutes()
     },
@@ -88,7 +88,7 @@ export default {
       author: 'Luca Camphuisen',
       theme_color: '#1f2937',
       scope: '/',
-      start_url: process.env.NODE_ENV !== 'production' ? '/' : process.env.baseUrl,
+      start_url: '/',
       developer: {
         name: 'Luca Camphuisen',
         url: 'https://github.com/Camphul'
