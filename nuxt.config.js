@@ -2,8 +2,9 @@ import getRoutes from './utils/getRoutes'
 export default {
   // Target: https://go.nuxtjs.dev/config-target
   target: 'static',
+  ssr: false,
   server: {
-    host: process.env.NODE_ENV !== 'production' ? '0' : 'https://camphul.github.io/Camphul'
+    host: process.env.NODE_ENV !== 'production' ? '0' : 'https://camphul.github.io/'
   },
   // Global page headers: https://go.nuxtjs.dev/config-head
   head: {
@@ -30,10 +31,10 @@ export default {
     ]
   },
   env: {
-    baseUrl: process.env.NODE_ENV !== 'production' ? process.env.BASE_URL || '' : 'https://camphul.github.io/Camphul/'
+    baseUrl: process.env.NODE_ENV !== 'production' ? process.env.BASE_URL || '' : 'https://camphul.github.io/'
   },
   sitemap: {
-    hostname: process.env.NODE_ENV !== 'production' ? process.env.HOST || '' : 'https://camphul.github.io/Camphul/', // https://www.yoursite.com
+    hostname: process.env.NODE_ENV !== 'production' ? process.env.HOST || '' : 'https://camphul.github.io/', // https://www.yoursite.com
     routes () {
       return getRoutes()
     },
@@ -56,7 +57,7 @@ export default {
     }
   },
   router: {
-    base: process.env.NODE_ENV !== 'production' ? '/' : '/Camphul/'
+    base: process.env.NODE_ENV !== 'production' ? '/' : '/'
   },
   // Auto import components: https://go.nuxtjs.dev/config-components
   components: true,
@@ -102,6 +103,7 @@ export default {
     }
   },
   optimization: {
+    minimize: true,
     splitChunks: {
       cacheGroups: {
         styles: {
