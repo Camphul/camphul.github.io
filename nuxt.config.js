@@ -31,10 +31,10 @@ export default {
     ]
   },
   env: {
-    baseUrl: process.env.NODE_ENV !== 'production' ? process.env.BASE_URL || '' : 'https://camphul.github.io/'
+    baseUrl: process.env.NODE_ENV !== 'production' ? process.env.BASE_URL || '' : 'https://camphul.github.io'
   },
   sitemap: {
-    hostname: process.env.NODE_ENV !== 'production' ? (process.env.HOST || '') : 'camphul.github.io', // https://www.yoursite.com
+    hostname: process.env.NODE_ENV !== 'production' ? (process.env.HOST || '') : 'https://camphul.github.io', // https://www.yoursite.com
     routes () {
       return getRoutes()
     },
