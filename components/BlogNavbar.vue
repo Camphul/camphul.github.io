@@ -102,7 +102,7 @@ export default {
     this.$root.$on('onMainContentClick', (event) => {
       this.setIsOpen(false)
     })
-    this.blogs = await this.$content('a', { deep: true }).only('slug').limit(20).fetch()
+    this.blogs = await this.$content('a', { deep: true }).only(['slug', 'path']).limit(20).fetch()
       // eslint-disable-next-line node/handle-callback-err
       .catch((err) => {
         alert('Could not fetch content')
