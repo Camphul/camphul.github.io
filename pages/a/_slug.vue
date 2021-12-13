@@ -9,7 +9,7 @@
 export default {
   async asyncData ({ $content, params, error }) {
     const slug = params.slug || 'index'
-    const page = await $content(slug).fetch()
+    const page = await $content('/a/' + slug).fetch()
       // eslint-disable-next-line node/handle-callback-err
       .catch((err) => {
         error({ statusCode: 404, message: 'Page not found' })

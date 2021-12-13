@@ -1,8 +1,9 @@
+import getRoutes from './utils/getRoutes'
 export default {
   // Target: https://go.nuxtjs.dev/config-target
   target: 'static',
   server: {
-    host: '0'
+    host: process.env.NODE_ENV !== 'production' ? '0' : 'https://camphul.github.io/Camphul'
   },
   // Global page headers: https://go.nuxtjs.dev/config-head
   head: {
@@ -29,7 +30,17 @@ export default {
     ]
   },
   env: {
-    BASE_URL: process.env.NODE_ENV !== 'production' ? process.env.BASE_URL : 'https://camphul.github.io/Camphul'
+    baseUrl: process.env.NODE_ENV !== 'production' ? process.env.BASE_URL || '' : 'https://camphul.github.io/Camphul/'
+  },
+  sitemap: {
+    hostname: process.env.NODE_ENV !== 'production' ? process.env.HOST || '' : 'https://camphul.github.io/Camphul/', // https://www.yoursite.com
+    routes () {
+      return getRoutes()
+    },
+    gzip: true,
+    exclude: [
+      '/**.[css|js|webp|png|jpg|jpeg|mp3|mp4]'
+    ]
   },
   // Global CSS: https://go.nuxtjs.dev/config-css
   css: [
@@ -40,11 +51,8 @@ export default {
   plugins: [
   ],
   generate: {
-    async routes () {
-      const { $content } = require('@nuxt/content')
-      const files = await $content({ deep: true }).only(['path']).fetch()
-
-      return files.map(file => file.path === '/index' ? '/' : file.path)
+    routes () {
+      return getRoutes()
     }
   },
   router: {
@@ -56,7 +64,7 @@ export default {
   // Modules for dev and build (recommended): https://go.nuxtjs.dev/config-modules
   buildModules: [
     // https://go.nuxtjs.dev/eslint
-    // '@nuxtjs/eslint-module',
+    '@nuxtjs/eslint-module',
     // https://go.nuxtjs.dev/tailwindcss
     '@nuxtjs/tailwindcss',
     '@nuxt/components'
@@ -67,15 +75,19 @@ export default {
     // https://go.nuxtjs.dev/pwa
     '@nuxtjs/pwa',
     // https://go.nuxtjs.dev/content
-    '@nuxt/content'
+    '@nuxt/content',
+    // https://sitemap.nuxtjs.org/
+    '@nuxtjs/sitemap'
   ],
-
   // PWA module configuration: https://go.nuxtjs.dev/pwa
   pwa: {
     manifest: {
       short_name: 'Camphul\'s blog',
       name: 'Camphul\'s Blog on Github Pages',
       author: 'Luca Camphuisen',
+      theme_color: '#1f2937',
+      scope: '/',
+      start_url: process.env.NODE_ENV !== 'production' ? '/' : process.env.baseUrl,
       developer: {
         name: 'Luca Camphuisen',
         url: 'https://github.com/Camphul'
