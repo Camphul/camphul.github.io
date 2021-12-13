@@ -2,7 +2,6 @@ import getRoutes from './utils/getRoutes'
 export default {
   // Target: https://go.nuxtjs.dev/config-target
   target: 'static',
-  ssr: false,
   server: {
     host: process.env.NODE_ENV !== 'production' ? '0' : 'https://camphul.github.io/'
   },
@@ -103,7 +102,6 @@ export default {
     }
   },
   optimization: {
-    minimize: true,
     splitChunks: {
       cacheGroups: {
         styles: {

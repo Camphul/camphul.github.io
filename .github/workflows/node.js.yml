@@ -26,7 +26,10 @@ jobs:
           node-version: ${{ matrix.node }}
 
       - name: Install dependencies
-        run: yarn
+        run: yarn install
+
+      - name: Build
+        run: yarn build
 
       - name: Generate
         run: yarn generate
