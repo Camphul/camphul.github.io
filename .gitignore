@@ -13,7 +13,8 @@ npm-debug.log
 # Nuxt generate
 dist
 static/sw.js
-
+.eslintcache
+yarn-error.log
 # IDE's
 .idea
 .vscode/*
