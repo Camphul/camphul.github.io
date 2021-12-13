@@ -1,5 +1,5 @@
 <template>
-  <a @click.prevent="$router.push('/index')">
+  <a href="#" @click.prevent="$router.push('/index')">
     <span class="pl-2 flex w-full justify-center items-center">
       <img id="camphul-logo" class="h-8 w-auto" content="eager" alt="logo" :src="baseUrlLogo">
       <p class="pl-2 font-medium"><slot></slot></p>

@@ -22,7 +22,7 @@
           href="https://github.com/Camphul/Camphul"
           target="_blank"
           alt="Github link"
-          class="inline-flex items-center py-2 bg-gray-800 p-2 mr-0 rounded-md text-gray-300 hover:text-white hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-800 focus:ring-white transition ease-in-out duration-100"
+          class="inline-flex items-center py-2 bg-gray-800 p-2 mr-0 rounded-md text-gray-300 hover:text-white hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-800 transition ease-in-out duration-100"
         >
           <GitHubLogo />
           <span class="pl-1">View on GitHub</span>

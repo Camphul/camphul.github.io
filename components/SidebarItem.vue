@@ -1,6 +1,6 @@
 <template>
   <span
-    class="flex items-center p-4 bg-gray-800 p-1 text-gray-300 hover:text-white  hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-800 focus:ring-white transition ease-in-out duration-100"
+    class="flex items-center p-4 bg-gray-800 p-1 text-gray-300 hover:text-white  hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-800 transition ease-in-out duration-200"
     @click="setOpen(false)"
   >
     <span v-show="hasIcon" class="mr-2">
