@@ -3,7 +3,7 @@ title: Homepage
 author: Luca Camphuisen
 ---
 # Hello World
-This is the blog of Camphul. Hello world everybody!
+My name is Luca Camphuisen and I've quickly put something together to share my research into various topics.
 
 On this blog I will be posting a bunch of random stuff.
 
