@@ -8,7 +8,8 @@ module.exports = {
       'pages/**/*.vue',
       'plugins/**/*.js',
       'utils/*.js',
-      'nuxt.config.js'
+      'nuxt.config.js',
+      'node_modules/tv-*/dist/tv-*.umd.min.js'
     ]
   }
 }

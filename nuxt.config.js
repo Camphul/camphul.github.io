@@ -77,7 +77,21 @@ export default {
     // https://go.nuxtjs.dev/content
     '@nuxt/content',
     // https://sitemap.nuxtjs.org/
-    '@nuxtjs/sitemap'
+    '@nuxtjs/sitemap',
+    // https://github.com/acidjazz/tv-toast
+    ['nuxt-tailvue', {
+      all: true,
+      toast: {
+        defaults: {
+          containerClasses: ['z-40', 'fixed', 'inset-0', 'flex', 'flex-col-reverse', 'items-end', 'justify-center',
+            'px-4', 'py-6', 'pointer-events-none', 'sm:p-6', 'sm:items-end', 'sm:justify-end']
+        },
+        defaultProps: {
+          timeout: 10,
+          progress: true
+        }
+      }
+    }]
   ],
   // PWA module configuration: https://go.nuxtjs.dev/pwa
   pwa: {

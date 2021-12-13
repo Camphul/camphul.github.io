@@ -1,21 +1,28 @@
 <template>
-  <NuxtContent
-    :document="page"
-    class="prose prose-sm sm:prose lg:prose-lg xl:prose-2xl mx-auto"
-  />
+  <MarkdownBlogpost :blog-post="page" />
 </template>
 
 <script>
+import getBlogEntry from '~/utils/getBlogEntry'
+
 export default {
-  async asyncData ({ $content, params, error }) {
-    const slug = params.slug || 'index'
-    const page = await $content(slug).fetch()
-      // eslint-disable-next-line node/handle-callback-err
-      .catch((err) => {
-        error({ statusCode: 404, message: 'Page not found' })
-      })
+  async asyncData ({ $content, route, error }) {
+    const page = await getBlogEntry($content, route.path || 'index', error)
+    const title = page.title + ' | Camphul\'s Blog'
     return {
-      page
+      page,
+      title
+    }
+  },
+  data () {
+    return {
+      page: {},
+      title: 'Camphul\'s GitHub pages blog'
+    }
+  },
+  head () {
+    return {
+      title: this.title
     }
   }
 }

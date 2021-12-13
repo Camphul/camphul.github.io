@@ -2,17 +2,7 @@
   <nav class="pl-2 flex fixed w-full items-center justify-between px-6 h-16 bg-gray-800 z-10">
     <div class="flex-shrink-0 flex items-start">
       <button class="mr-2" aria-label="Open Menu" @click="drawer">
-        <svg
-          fill="none"
-          stroke="currentColor"
-          stroke-linecap="round"
-          stroke-linejoin="round"
-          stroke-width="2"
-          viewBox="0 0 24 24"
-          class="w-8 h-8"
-        >
-          <path d="M4 6h16M4 12h16M4 18h16" />
-        </svg>
+        <HamburgerMenuIcon />
       </button>
       <CamphulLogo><span class="invisible font-medium text-lg font-sans md:text-xl md:visible md:text-white justify-center md:font-bold">Camphul</span></CamphulLogo>
     </div>
@@ -37,17 +27,7 @@
           @click="isOpen = false"
         >
           <button class="mr-2" aria-label="Open Menu" @click="drawer">
-            <svg
-              fill="none"
-              stroke="currentColor"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              stroke-width="2"
-              viewBox="0 0 24 24"
-              class="w-8 h-8"
-            >
-              <path d="M4 6h16M4 12h16M4 18h16" />
-            </svg>
+            <HamburgerMenuIcon />
           </button>
           <CamphulLogo class="text-white font-sans text-lg md:text-xl">
             Camphul
@@ -58,7 +38,7 @@
         <template v-for="blog in blogs">
           <SidebarItem
             :key="'blog-'+blog"
-            :name="blog.slug"
+            :name="blog.title"
             :is-open="isOpen"
             :has-icon="false"
             class="transition ease-in duration-100"
@@ -66,7 +46,20 @@
           />
         </template>
         <div class="fixed bottom-0 w-full">
-          <!--          <SidebarItem name="Bottom Item" :is-open="isOpen" :has-icon="false" @itemClick="setIsOpen" />-->
+          <SidebarItem
+            name="Install to Homescreen"
+            :is-open="isOpen"
+            has-icon
+            @itemClick="$toast.show({
+              type: 'danger',
+              title: 'Not implemented',
+              message: 'This feature hasn\'t even been implemented yet lol.',
+            }) "
+          >
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
+            </svg>
+          </SidebarItem>
         </div>
       </aside>
     </div>
@@ -75,9 +68,10 @@
 <script>
 import CamphulLogo from '~/components/CamphulLogo'
 import SidebarItem from '~/components/SidebarItem'
+import HamburgerMenuIcon from '~/components/icons/HamburgerMenuIcon'
 
 export default {
-  components: { SidebarItem, CamphulLogo },
+  components: { HamburgerMenuIcon, SidebarItem, CamphulLogo },
   data () {
     return {
       isOpen: false,
@@ -102,10 +96,14 @@ export default {
     this.$root.$on('onMainContentClick', (event) => {
       this.setIsOpen(false)
     })
-    this.blogs = await this.$content('a', { deep: true }).only(['slug', 'path']).limit(20).fetch()
+    this.blogs = await this.$content('a', { deep: true }).only(['slug', 'path', 'title']).limit(20).fetch()
       // eslint-disable-next-line node/handle-callback-err
       .catch((err) => {
-        alert('Could not fetch content')
+        this.$toast.show({
+          title: 'Failed to fetch blogs',
+          message: 'We could not fetch the blogs from the server. Try again later.',
+          type: 'danger'
+        })
       })
     document.addEventListener('keydown', (e) => {
       if (e.keyCode === 27 && this.isOpen) {
