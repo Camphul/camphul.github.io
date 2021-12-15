@@ -24,6 +24,7 @@ My researech predictions were right. [CVE-2021045046](https://nvd.nist.gov/vuln/
 I am hoping that this stays limited to log4j and doesnt apply to Slf4j and logback.
 
 This article will be updated soon but here's a snippet of the conversation I had on the 13th regarding possible exploitation of the MDC feature if a non default configuration for pattern layout was used.
+The chat is in dutch and I'm too busy to make a translation for any english speakers right now. Use google translate or something.
 ![Whatsapp conversation regarding MDC exploitation](/010_mdc_possible_vector.jpg "Whatsapp conversation regarding MDC exploitation when a non default patternlayout is used")
 
 
