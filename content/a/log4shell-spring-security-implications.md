@@ -9,8 +9,10 @@ In this article we will research the logging implementation used in Spring Secur
 
 I wrote this in a hurry and this will contain spelling and grammar mistakes. Please dont mind some words missing and/or being misplaced.
 
+Please factcheck my research and check with Spring's statements regarding the known CVE's. Use your own common sense to see if any of your applications are vulnerable. The Dutch NCSC(national cyber security center) have [an extensive list of applications](https://github.com/NCSC-NL/log4shell/tree/main/software) and their vulnerability status.
+
 Log4Shell is known as [CVE-2021-44228](https://nvd.nist.gov/vuln/detail/CVE-2021-44228) and allows RCE by loading an external resource for logging message parameter lookup (comparable to a string format function).
-In the case of Log4Shell the lookup may end up classloading the given resource through a combination of JNDI and LDAP.
+In the case of Log4Shell the lookup may end up classloading the given resource through a combination of JNDI and LDAP/RMI/DNS.
 
 Spring based web-applications have integrated these vulnerable libraries in as way of logging. 
 This article want to research deeper into the Log4j exploit and see if it is possible to execute remote code and/or retrieve information secured on an endpoint by Spring Security.
@@ -20,7 +22,7 @@ This article want to research deeper into the Log4j exploit and see if it is pos
 I was on the right path of finding another logging related vuln but had too much other work to do. I was on the right path as of December 13th when I discussed a possible vuln that used MDC and non-default configurations for logging patterns.
 Mostly enterprises would be affected by this I am assuming due to the nature of the MDC feature(cant use ThreadLocal in distributed systems lol).
 
-My researech predictions were right. [CVE-2021045046](https://nvd.nist.gov/vuln/detail/CVE-2021-45046) is currently being analysed. This bypasses the previous mitigations and might have a bigger attack surface across the entire globe(thank u Larry Ellison for the 3 billion java devices lol).
+My researech predictions were right. [CVE-2021-45046](https://nvd.nist.gov/vuln/detail/CVE-2021-45046) is currently being analysed. This bypasses the previous mitigations and might have a bigger attack surface across the entire globe(thank u Larry Ellison for the 3 billion java devices lol).
 I am hoping that this stays limited to log4j and doesnt apply to Slf4j and logback.
 
 This article will be updated soon but here's a snippet of the conversation I had on the 13th regarding possible exploitation of the MDC feature if a non default configuration for pattern layout was used.
