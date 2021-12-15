@@ -7,11 +7,25 @@ description: In this article we will research the logging implementation used in
 
 In this article we will research the logging implementation used in Spring Security and find out if there are any possible ways of unauthorized entry into a Spring application using the recently published Log4Shell RCE.
 
+I wrote this in a hurry and this will contain spelling and grammar mistakes. Please dont mind some words missing and/or being misplaced.
+
 Log4Shell is known as [CVE-2021-44228](https://nvd.nist.gov/vuln/detail/CVE-2021-44228) and allows RCE by loading an external resource for logging message parameter lookup (comparable to a string format function).
 In the case of Log4Shell the lookup may end up classloading the given resource through a combination of JNDI and LDAP.
 
 Spring based web-applications have integrated these vulnerable libraries in as way of logging. 
 This article want to research deeper into the Log4j exploit and see if it is possible to execute remote code and/or retrieve information secured on an endpoint by Spring Security.
+
+**UPDATE AS OF 15TH OF DECEMBER**
+
+I was on the right path of finding another logging related vuln but had too much other work to do. I was on the right path as of December 13th when I discussed a possible vuln that used MDC and non-default configurations for logging patterns.
+Mostly enterprises would be affected by this I am assuming due to the nature of the MDC feature(cant use ThreadLocal in distributed systems lol).
+
+My researech predictions were right. [CVE-2021045046](https://nvd.nist.gov/vuln/detail/CVE-2021-45046) is currently being analysed. This bypasses the previous mitigations and might have a bigger attack surface across the entire globe(thank u Larry Ellison for the 3 billion java devices lol).
+I am hoping that this stays limited to log4j and doesnt apply to Slf4j and logback.
+
+This article will be updated soon but here's a snippet of the conversation I had on the 13th regarding possible exploitation of the MDC feature if a non default configuration for pattern layout was used.
+![Whatsapp conversation regarding MDC exploitation](/010_mdc_possible_vector.jpg "Whatsapp conversation regarding MDC exploitation when a non default patternlayout is used")
+
 
 ## Hypothesis and prerequisites
 
@@ -124,10 +138,22 @@ Spring Security works by intercepting the servlet request and putting the reques
 Now that we know that we can get past some filter without authentication I'll place some debug breakpoints in these filter chains and see what logging technique they use.
 In `SecurityFilterChain` we see our log calls being produced.
 
-During the first request an instance of a Spring LogAdapter was discovered. This instane was of type Slf4j and only allowed strings and exceptions as input.
-No client input.
+During the first request an instance of a Spring LogAdapter was discovered. This instance was of type Slf4j and only allowed strings and exceptions as input.
+No client input. I'll just dump my findings/pics as im in quite a hurry myself. People who have the slightest bit of experience with Spring/AOP/this debacle will understand this(and the security riscs later posted).
 
-**INSERT TAKEN PICS FROM DEBUGGER HERE**
+![LogAdapter_slf4j](/001_LogAdapter_slf4j.png "Spring's LogAdapter class")
+
+We can also see that no logs are really done if the log level is not met. This is due to the performance impact on the application if it were to perform these message parsing activities even if the log level is not met.
+
+![Performance reasoning](/002_LogAdapter_slf4j_debug.png "Performance reasoning")
+
+This is further proven by our debug breakpoint in the filter chain during a client's request.
+
+![Performance reasoning2](/003_LogAdapter_slf4j_performance_protections.png "Performance reasoning part 2")
+
+The way the message was formatted in the filter looked suspicious to me. We can later see that Spring uses a custom logging message abstraction in their core library(ontop of I dont know how many abstractions at this point lol).
+
+![Spring Core Log](/004_LogAdapter_custom_formatter.png "Spring Core Log")
 
 After some digging I discovered a Log formatter called `org.spring.core.log.LogMessage`.
 Using this class a FormatMessage is formed from an input string and passed arguments. It uses `String.format(input, args...)` so no lookup is performed here.
