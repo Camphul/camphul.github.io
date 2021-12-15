@@ -105,3 +105,29 @@ The same happens even when we attempt to call a secured endpoint by an unauthori
 2021-12-13 11:30:04.212 DEBUG 137096 --- [nio-8080-exec-3] o.s.security.web.FilterChainProxy        : Secured GET /error?evilparam=RCEstring
 2021-12-13 11:30:04.276 DEBUG 137096 --- [nio-8080-exec-3] s.s.w.c.SecurityContextPersistenceFilter : Cleared SecurityContextHolder to complete request
 ```
+
+When doing the same request but with httpbasic through curl we still get a similar logging output:
+```
+2021-12-13 11:47:20.552 DEBUG 137096 --- [nio-8080-exec-4] o.s.security.web.FilterChainProxy        : Securing GET /private?evilparam=RCEstring
+2021-12-13 11:47:20.553 DEBUG 137096 --- [nio-8080-exec-4] s.s.w.c.SecurityContextPersistenceFilter : Set SecurityContextHolder to empty SecurityContext
+2021-12-13 11:47:20.809 DEBUG 137096 --- [nio-8080-exec-4] o.s.s.a.dao.DaoAuthenticationProvider    : Authenticated user
+2021-12-13 11:47:20.811 DEBUG 137096 --- [nio-8080-exec-4] o.s.s.w.a.www.BasicAuthenticationFilter  : Set SecurityContextHolder to UsernamePasswordAuthenticationToken [Principal=org.springframework.security.core.userdetails.User [Username=bob, Password=[PROTECTED], Enabled=true, AccountNonExpired=true, credentialsNonExpired=true, AccountNonLocked=true, Granted Authorities=[ROLE_USER]], Credentials=[PROTECTED], Authenticated=true, Details=WebAuthenticationDetails [RemoteIpAddress=127.0.0.1, SessionId=null], Granted Authorities=[ROLE_USER]]
+2021-12-13 11:47:20.812 DEBUG 137096 --- [nio-8080-exec-4] o.s.s.w.a.i.FilterSecurityInterceptor    : Authorized filter invocation [GET /private?evilparam=RCEstring] with attributes [hasRole('ROLE_USER')]
+2021-12-13 11:47:20.812 DEBUG 137096 --- [nio-8080-exec-4] o.s.security.web.FilterChainProxy        : Secured GET /private?evilparam=RCEstring
+2021-12-13 11:47:20.815 DEBUG 137096 --- [nio-8080-exec-4] s.s.w.c.SecurityContextPersistenceFilter : Cleared SecurityContextHolder to complete request
+```
+
+## Breakpoints across the filter chain
+
+Spring Security works by intercepting the servlet request and putting the request through a chain that can at any point return an unauthorized response.
+
+Now that we know that we can get past some filter without authentication I'll place some debug breakpoints in these filter chains and see what logging technique they use.
+In `SecurityFilterChain` we see our log calls being produced.
+
+During the first request an instance of a Spring LogAdapter was discovered. This instane was of type Slf4j and only allowed strings and exceptions as input.
+No client input.
+
+**INSERT TAKEN PICS FROM DEBUGGER HERE**
+
+After some digging I discovered a Log formatter called `org.spring.core.log.LogMessage`.
+Using this class a FormatMessage is formed from an input string and passed arguments. It uses `String.format(input, args...)` so no lookup is performed here.
